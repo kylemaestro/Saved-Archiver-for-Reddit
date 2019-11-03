@@ -26,7 +26,7 @@ We now need to register for API use. Navigate to https://www.reddit.com/wiki/api
 and click the link at the bottom 'Read the full API terms and sign up for usage'.
 You will be redirected to a Google form. Fill out the fields as directed. Make
 sure to fill in the following field with your client_id value from the previous screen:
-![alt text](https://i.imgur.com/stWCsEn.png "Our app")
+![alt text](https://i.imgur.com/tHe6rCT.png "Your client_id can be found in https://www.reddit.com/prefs/apps/")
 
 We're almost done! The last step is to change the username and password fields in
 'archiver.py' to match those of the account you used to setup API access.
