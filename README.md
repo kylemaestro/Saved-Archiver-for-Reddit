@@ -25,24 +25,24 @@ Fill in the fields in archiver.py with the values shown here.
 We now need to register for API use. Navigate to https://www.reddit.com/wiki/api
 and click the link at the bottom 'Read the full API terms and sign up for usage'.
 You will be redirected to a Google form. Fill out the fields as directed. Make
-sure to fill in the following field with your client_id value from the previous screen:
+sure to fill in the following field with your **client_id value** from the previous screen:
 ![alt text](https://i.imgur.com/tHe6rCT.png "Your client_id can be found in https://www.reddit.com/prefs/apps/")
 
 We're almost done! The last step is to change the username and password fields in
 'archiver.py' to match those of the account you used to setup API access.
 
 *Note: Saved Archiver does not save or transmit this information to anyone other than
-Reddit.com. You should always be cautious when using scripts obtained from online,
-and ensure that you understand exactly how your personal information is being used.*
+Reddit.com. Even so, you should always be cautious when using scripts obtained from the internet,
+and ensure that you understand exactly how your credentials are being used. For more information
+visit https://praw.readthedocs.io/en/latest/getting_started/authentication.html*
 
-Now that we've finished setup, simply run cmd.exe as an administrator (to ensure proper
-file writing priveleges), and change your working directory to the folder containing
+Now that we've finished setup, open a Powershell window in the directory containing
 'archive.py' and 'imgurdownloader.py'. Run the script with the command:
 ```
 python archiver.py
 ```
 When the script has completed execution, you should see a file named 'saved.txt' that contains
-all saved comments and posts with urls, and a folder named 'images' that has grouped saved imgur
+all saved comments and posts with urls, and a folder named 'images' that has grouped saved imgur/reddit
 links by reddit username. 
 
 ## Known Issues
