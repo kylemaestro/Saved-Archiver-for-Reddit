@@ -8,11 +8,11 @@ from praw.models import Comment
 from imgurdownloader import ImgurDownloader
 
 # Creates praw instance of Reddit account
-reddit = praw.Reddit(client_id='your_id_here', \
-                     client_secret='your_secret_here', \
-                     user_agent='your_user_agent_here', \
-                     username='your_reddit_username_here', \
-                     password='your_password_here')
+reddit = praw.Reddit(client_id='tkaDNC6nObkmIQ', \
+                     client_secret='-H5wEpGkEEIO9rgRAkb81p_Y_6Y', \
+                     user_agent='Saved Archiver for Reddit', \
+                     username='squidwardtoblerone', \
+                     password='squidwardtoblerone')
 
 # Downloads image from Imgur using the ImgurDownloader library
 def download_from_imgur(link, post):
@@ -22,15 +22,14 @@ def download_from_imgur(link, post):
         if(downloader.num_images() <= MAX_ALBUM_LEN):
             # Group images by redditor name
             album_name = post.author.name
-            downloader.save_images("./images/{}".format(album_name))
+            downloader.save_images("./saved/images/{}".format(album_name))
     except:
         print("Error saving Imgur image: {}".format(link))
 
 # Downlaods image from URL using urllib
 def download_from_url(link, post, ext):
-    # Random integer suffix prevents overwriting of multiple images from same author
     try:
-        path = "./images/{}{}.{}".format(post.author.name, random.randint(0, 99999), ext)
+        path = "./saved/images/{}.{}".format(post.title, ext)
         urllib.request.urlretrieve(link, path)
     except:
         print("Error saving Reddit image: {}".format(link))
@@ -53,8 +52,8 @@ def save_post(post):
 
 # Saves a comment to text file
 def save_comment(comment):
-    comment = str(item.body)
-    f.write("COMMENT: {}".format(comment))
+    str_comment = str(comment.body)
+    f.write("COMMENT: {}".format(str_comment))
     f.write('\n\n')
 
 # Archive all present items in account's saved history
@@ -63,35 +62,38 @@ def archive_everything():
     post_count = 0
     comment_count = 0
     last_saved = ""
-    try:
-        for item in saved_stuff:
-            # post #
-            if isinstance(item, Submission):
+
+    for item in saved_stuff:
+        # post #
+        if isinstance(item, Submission):
+            try:
                 save_post(item)
                 last_saved = "post"
                 post_count += 1
+            except:
+                print("[Error] Could not save submission {}".format(item.id))
 
-            # comment #
-            else:
+        # comment #
+        elif isinstance(item, Comment):
+            try:
                 save_comment(item)
                 last_saved = "comment"
                 comment_count += 1
+            except:
+                print("[Error] Could not save comment {}".format(item.id))
 
-            # Print current progress
-            if last_saved == "post":
-                print("Saved post {}".format(post_count))
-            elif last_saved == "comment":
-                print("Saved comment {}".format(comment_count))
+        # Print current progress
+        if last_saved == "post":
+            print("Saved post {}".format(post_count))
+        elif last_saved == "comment":
+            print("Saved comment {}".format(comment_count))
 
-        print("\nAll items saved")
-    except:
-        # Always ends in HTTP 500 when end of saved history is reached
-        print("\nEnd of saved history reached, all items saved")
+    print("\nAll items saved")
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # Opens output file in write mode
-f = open("./saved.txt", "w", encoding="utf-8")
+f = open("./saved/saved.txt", "w", encoding="utf-8")
 
 # Saves saved content
 archive_everything()
