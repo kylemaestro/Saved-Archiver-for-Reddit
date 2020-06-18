@@ -39,7 +39,13 @@ def send_message(client, message):
 def obtain_token():
     state = str(random.randint(0, 65000)) # exists only to verify our request at the end
     url = reddit.auth.url(scopes, state, "permanent") # this could also be temporary
-    print("Please open this url in your browser to log in to Reddit: " + url)
+    print("\nHowdy! Copy and paste this url in your browser to give this application")
+    print("permission to access your saved content on Reddit: ")
+    print(url)
+    print("\nMake sure you're already logged in on your browser to the Reddit")
+    print("account whose content you'd like to save!")
+    print("\nAfter accepting the permission request, the archiver will automatically")
+    print("begin downloading your saved content to the /saved folder within this directory\n")
     sys.stdout.flush()
 
     client = receive_connection()
@@ -49,7 +55,7 @@ def obtain_token():
         key: value for (key, value) in [token.split("=") for token in param_tokens]
     }
 
-    print("[Debug] param_tokens: {}".format(param_tokens))
+    #print("[Debug] param_tokens: {}".format(param_tokens))
 
     if state != params["state"]:
         send_message(
@@ -65,7 +71,8 @@ def obtain_token():
     send_message(client, "Refresh token: {}".format(refresh_token))
 
     # If this shows your logged in username, it worked!
-    print("[Debug] reddit.user.me(): {}".format(reddit.user.me()))
+    #print("[Debug] reddit.user.me(): {}".format(reddit.user.me()))
+    print("\nBeginning download of saved content for /u/{}\n".format(reddit.user.me()))
 
     return 0
 
