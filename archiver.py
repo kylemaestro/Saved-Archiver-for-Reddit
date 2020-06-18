@@ -3,16 +3,71 @@ import urllib.request
 import os
 import praw
 import random
+import socket
+import sys
 from praw.models import Submission
 from praw.models import Comment
 from imgurdownloader import ImgurDownloader
 
-# Creates praw instance of Reddit account
-reddit = praw.Reddit(client_id='tkaDNC6nObkmIQ', \
-                     client_secret='-H5wEpGkEEIO9rgRAkb81p_Y_6Y', \
-                     user_agent='Saved Archiver for Reddit', \
-                     username='squidwardtoblerone', \
-                     password='squidwardtoblerone')
+"""
+The following 3 functions were provided by the PRAW docs, located here:
+https://praw.readthedocs.io/en/latest/tutorials/refresh_token.html#refresh-token
+
+They create refresh tokens that we can use to authenticate with code flow
+"""
+
+def receive_connection():
+    """Wait for and then return a connected socket..
+
+    Opens a TCP connection on port 8080, and waits for a single client.
+
+    """
+    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    server.bind(("localhost", 8080))
+    server.listen(1)
+    client = server.accept()[0]
+    server.close()
+    return client
+
+def send_message(client, message):
+    """Send message to client and close the connection."""
+    print(message)
+    client.send("HTTP/1.1 200 OK\r\n\r\n{}".format(message).encode("utf-8"))
+    client.close()
+
+def obtain_token():
+    state = str(random.randint(0, 65000)) # exists only to verify our request at the end
+    url = reddit.auth.url(scopes, state, "permanent") # this could also be temporary
+    print("Please open this url in your browser to log in to Reddit: " + url)
+    sys.stdout.flush()
+
+    client = receive_connection()
+    data = client.recv(1024).decode("utf-8")
+    param_tokens = data.split(" ", 2)[1].split("?", 1)[1].split("&")
+    params = {
+        key: value for (key, value) in [token.split("=") for token in param_tokens]
+    }
+
+    print("[Debug] param_tokens: {}".format(param_tokens))
+
+    if state != params["state"]:
+        send_message(
+            client,
+            "State mismatch. Expected: {} Received: {}".format(state, params["state"]),
+        )
+        return 1
+    elif "error" in params:
+        send_message(client, params["error"])
+        return 1
+
+    refresh_token = reddit.auth.authorize(params["code"])
+    send_message(client, "Refresh token: {}".format(refresh_token))
+
+    # If this shows your logged in username, it worked!
+    print("[Debug] reddit.user.me(): {}".format(reddit.user.me()))
+
+    return 0
 
 # Downloads image from Imgur using the ImgurDownloader library
 def download_from_imgur(link, post):
@@ -91,6 +146,20 @@ def archive_everything():
     print("\nAll items saved")
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# Initialize our request with the script's client information (reddit.com/prefs/apps)
+client_id = "tkaDNC6nObkmIQ"
+client_secret = "-H5wEpGkEEIO9rgRAkb81p_Y_6Y"
+scopes = ["history","identity"]
+
+reddit = praw.Reddit(
+    client_id=client_id,
+    client_secret=client_secret,
+    redirect_uri="http://localhost:8080",
+    user_agent="Saved Archiver for Reddit",
+)
+
+obtain_token()
 
 # Opens output file in write mode
 f = open("./saved/saved.txt", "w", encoding="utf-8")
