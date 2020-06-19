@@ -96,14 +96,20 @@ def download_from_url(link, post, ext):
     except:
         print("Error saving Reddit image: {}".format(link))
 
-# Saves post title and url to text file and downloads image to /images
+# Saves post title, body, and url to text file and downloads image to /images
 def save_post(post):
     title = str(post.title)
     link = str(post.url)
 
-    f.write("POST: {}".format(title))
-    f.write("\nURL: {}".format(link))
-    f.write('\n\n')
+    if post.is_self == False:
+        f.write("POST: {}".format(title))
+        f.write("\nURL: {}".format(link))
+        f.write('\n\n')
+    elif post.is_self == True:
+        f.write("POST: {}".format(title))
+        f.write("\nBODY: {}".format(post.selftext))
+        f.write("\nURL: {}".format(link))
+        f.write('\n\n')
 
     if "imgur" in link:
         download_from_imgur(link, post)
@@ -116,6 +122,7 @@ def save_post(post):
 def save_comment(comment):
     str_comment = str(comment.body)
     f.write("COMMENT: {}".format(str_comment))
+    f.write("\nURL: {}".format(comment.permalink))
     f.write('\n\n')
 
 # Archive all present items in account's saved history
