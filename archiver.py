@@ -5,9 +5,11 @@ import praw
 import random
 import socket
 import sys
+import colorama
 from praw.models import Submission
 from praw.models import Comment
 from imgurdownloader import ImgurDownloader
+from colorama import init, Fore
 
 """
 The following 3 functions were provided by the PRAW docs, located here:
@@ -40,9 +42,10 @@ def obtain_token():
     state = str(random.randint(0, 65000)) # exists only to verify our request at the end
     url = reddit.auth.url(scopes, state, "permanent") # this could also be temporary
     print("\nHowdy! Copy and paste this url in your browser to give this application")
-    print("permission to access your saved content on Reddit: ")
-    print(url)
-    print("\nMake sure you're already logged in on your browser to the Reddit")
+    print("permission to access your saved content on Reddit: \n")
+    print(Fore.CYAN + url)
+    print(Fore.RESET)
+    print("Make sure you're already logged in on your browser to the Reddit")
     print("account whose content you'd like to save!")
     print("\nAfter accepting the permission request, the archiver will automatically")
     print("begin downloading your saved content to the /saved folder within this directory\n")
@@ -160,6 +163,9 @@ def archive_everything():
     print("\nAll items saved")
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# For colorama color terminal text setup
+init()
 
 # Initialize our request with the script's client information (reddit.com/prefs/apps)
 client_id = "tkaDNC6nObkmIQ"
