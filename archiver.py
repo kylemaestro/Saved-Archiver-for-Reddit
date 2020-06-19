@@ -181,6 +181,8 @@ reddit = praw.Reddit(
 
 obtain_token()
 
+os.mkdir("./saved")
+
 # Opens output file in write mode
 f = open("./saved/saved.txt", "w", encoding="utf-8")
 
