@@ -7,6 +7,7 @@ import random
 import socket
 import sys
 import colorama
+import time
 from praw.models import Submission
 from praw.models import Comment
 from imgurdownloader import ImgurDownloader
@@ -163,6 +164,7 @@ def archive_everything():
             print("Saved comment {}".format(comment_count))
 
     print("\nAll items saved")
+    time.sleep(3)
     input("Press Enter to exit...")
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
