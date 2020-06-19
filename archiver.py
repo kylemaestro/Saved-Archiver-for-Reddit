@@ -186,7 +186,7 @@ reddit = praw.Reddit(
 
 obtain_token()
 
-if not path.exists("./saved"):
+if path.exists("./saved") == False:
     os.mkdir("./saved")
 
 # Opens output file in write mode
