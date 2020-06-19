@@ -9,7 +9,9 @@ The script uses the Reddit API's OAuth2 to authenticate and get permission to ac
  * Images can be overwritten if another image is encountered with the exact same post title
 
 ## How to Use
-First, open up a web browser of your choice and navigate to reddit.com. Log in to your Reddit account as normal. Next, double-click "start.bat" to start the script. It will ask you to copy and paste a url into the same browser you're logged into Reddit on. Reddit will then ask you to give the script permission to access your saved content and username. *Any other information, including your password, submissions, comments, etc will not and cannot be accessed by the script in any way whatsoever*.
+First, click "Clone or download" on the repository page and click "Download ZIP". Extract the downloaded zip file to your desktop.
+
+Second, open up a web browser of your choice and navigate to reddit.com. Log in to your Reddit account as normal. Next, double-click "start.bat" in the extracted folder to start the script. It will ask you to copy and paste a url into the same browser you're logged into Reddit on. Reddit will then ask you to give the script permission to access your saved content and username. *Any other information, including your password, submissions, comments, etc will not and cannot be accessed by the script in any way whatsoever*.
 
 After you've granted the script the permissions it needs, a blank page showing your *refresh token* will be shown. This page can be safely closed, it is not needed to proceed. The archiver will automatically begin downloading your saved content, writing the post titles and urls as well as full comments to "/saved/saved.txt". Images will be downloaded to the "/saved/images/" folder. Imgur albums will be grouped in folders with the Reddit username of the submitter as the folder name.
 
