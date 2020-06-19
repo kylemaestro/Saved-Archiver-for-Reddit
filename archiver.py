@@ -1,6 +1,7 @@
 #! python3
 import urllib.request
 import os
+import os.path
 import praw
 import random
 import socket
@@ -10,6 +11,7 @@ from praw.models import Submission
 from praw.models import Comment
 from imgurdownloader import ImgurDownloader
 from colorama import init, Fore
+from os import path
 
 """
 The following 3 functions were provided by the PRAW docs, located here:
@@ -161,6 +163,7 @@ def archive_everything():
             print("Saved comment {}".format(comment_count))
 
     print("\nAll items saved")
+    input("Press Enter to exit...")
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -181,7 +184,8 @@ reddit = praw.Reddit(
 
 obtain_token()
 
-os.mkdir("./saved")
+if not path.exists("./saved"):
+    os.mkdir("./saved")
 
 # Opens output file in write mode
 f = open("./saved/saved.txt", "w", encoding="utf-8")
