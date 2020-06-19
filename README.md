@@ -8,6 +8,19 @@ The script uses the Reddit API's OAuth2 to authenticate and get permission to ac
  * Some i.redd.it images will fail to download
  * Images can be overwritten if another image is encountered with the exact same post title
 
+## Dependencies (install these first!)
+This script depends on a couple libraries which are not included in the source code. Before proceeding, please install these two modules (this process should take less than 60 seconds).
+
+[PRAW](https://praw.readthedocs.io/en/latest/) can be installed with the following command:
+```
+pip install praw
+```
+
+Similarly, [colorama](https://pypi.org/project/colorama/) can be installed by executing:
+```
+pip install colorama
+```
+
 ## How to Use
 First, click "Clone or download" on the repository page and click "Download ZIP". Extract the downloaded zip file to your desktop.
 
